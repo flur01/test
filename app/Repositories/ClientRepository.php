@@ -25,11 +25,6 @@ class ClientRepository implements ClientRepositoryInterface
         return Client::where($columnName, $value)->orderBy($columnName);
     }
 
-    public function all()
-    {
-        return Client::all();
-    }
-
     public function paginate($client)
     {
         return $client->paginate(config('app.clients_pagination'));
