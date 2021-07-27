@@ -15,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('register', [ClientController::class, 'store']);
-Route::post('account', [ClientController::class, 'index']);
+Route::get('account', [ClientController::class, 'index']);

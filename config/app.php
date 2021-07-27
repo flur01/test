@@ -233,4 +233,6 @@ return [
 
         'GoogleMaps' => GoogleMaps\Facade\GoogleMapsFacade::class,
     ],
+
+    'clients_pagination' => env('CLIENTS_PAGINATION')
 ];

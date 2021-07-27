@@ -14,4 +14,25 @@ class ClientRepository implements ClientRepositoryInterface
     public function createUserForClient(Client $client, array $userArguments) {
         return $client->users()->create($userArguments);
     }
+
+    public function sort(string $columnName)
+    {
+        return Client::orderBy($columnName);
+    }
+
+    public function filter(string $columnName, $value)
+    {
+        return Client::where($columnName, $value)->orderBy($columnName);
+    }
+
+    public function all()
+    {
+        return Client::all();
+    }
+
+    public function paginate($client)
+    {
+        return $client->paginate(config('app.clients_pagination'));
+    }
+
 }

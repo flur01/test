@@ -6,6 +6,7 @@ use App\Http\Requests\CreateClientRequest;
 use App\Http\Resources\ClientResource;
 use App\Models\Client;
 use App\Repositories\ClientRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class ClientController extends Controller
@@ -16,9 +17,15 @@ class ClientController extends Controller
         $this->clientRepository = $clientRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return ClientResource::collection(Client::all());
+        $client = new Client();
+        if ($request->column && !$request->value){
+            $client = $this->clientRepository->sort($request->column);
+        } elseif ($request->column && $request->value) {
+            $client = $this->clientRepository->filter($request->column, $request->value);
+        }
+        return ClientResource::collection($this->clientRepository->paginate($client));
     }
 
     public function store(CreateClientRequest $request)
