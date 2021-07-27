@@ -20,9 +20,9 @@ class CreateUsersTable extends Migration
             $table->string('last_name', 50);
             $table->string('email', 150)->unique();
             $table->string('password', 256);
-            $table->string('phone', 20);
-            $table->string('profile_uri', 255);
-            $table->timestamp('lastPassword_reset')->nullable();
+            $table->string('phone', 20)->unique();
+            $table->string('profile_uri', 255)->nullable();
+            $table->timestamp('lastPassword_reset')->useCurrent();
             $table->enum('status', ['Active', 'Inactive']);
             $table->timestamp('deleted_at')->nullable();
             $table->rememberToken();
