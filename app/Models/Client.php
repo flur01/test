@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Client extends Model
 {
@@ -34,6 +35,22 @@ class Client extends Model
     {
         parent::boot();
         static::creating(function (Client $client) {
+            $location = Cache::rememberForever($client->address1, function () use($client) {
+                $response = json_decode(\GoogleMaps::load('geocoding')
+                    ->setParam ([
+                        'address' => $client->address1,
+                        'components'    => [
+                            'city'   => $client->city,
+                            'country' => $client->country,
+                            'state' => $client->state,
+                            'zip' => $client->zip,
+                        ]
+                    ])
+                    ->get());
+                return $response->results[0]->geometry->location;
+            });
+            $client->attributes['latitude'] = $location->lat;
+            $client->attributes['longitude'] = $location->lng;
             $client->attributes['start_validity'] = Carbon::now();
             $client->attributes['end_validity'] = Carbon::now()->addDays(15);
         });
