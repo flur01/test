@@ -15,19 +15,11 @@ class ClientRepository implements ClientRepositoryInterface
         return $client->users()->create($userArguments);
     }
 
-    public function sort(string $columnName)
-    {
-        return Client::orderBy($columnName);
+    public function getAll(string $sortColumn = 'id', array $filterData = []){
+        $clients = Client::orderBy($sortColumn);
+        if (count($filterData)){
+            $clients->filterBy($filterData);
+        }
+        return $clients->paginate(config('app.clients_pagination'));
     }
-
-    public function filter(string $columnName, $value)
-    {
-        return Client::where($columnName, $value)->orderBy($columnName);
-    }
-
-    public function paginate($client)
-    {
-        return $client->paginate(config('app.clients_pagination'));
-    }
-
 }

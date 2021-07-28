@@ -36,6 +36,7 @@ class CreateClientRequest extends FormRequest
             'user' => 'required|array',
             'user.first_name' => 'required|string|max:50',
             'user.last_name' => 'required|string|max:50',
+            'user.email' => 'required|email|unique:users,email',
             'user.password' => 'required|string|confirmed|max:256',
             'user.phone' => 'required|string|max:20|unique:users,phone',
         ];

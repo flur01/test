@@ -75,4 +75,12 @@ class Client extends Model
     {
         return $this->users()->get()->count();
     }
+
+    public function scopeFilterBy($query, array $filterData)
+    {
+        foreach ($filterData as $column => $value) {
+            $query->where($column, $value);
+        }
+        return $query;
+    }
 }
