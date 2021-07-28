@@ -47,10 +47,14 @@ class Client extends Model
                         ]
                     ])
                     ->get());
-                return $response->results[0]->geometry->location;
+                if (count($response->results)){
+                    return $response->results[0]->geometry->location;
+                }
             });
-            $client->attributes['latitude'] = $location->lat;
-            $client->attributes['longitude'] = $location->lng;
+            if ($location) {
+                $client->attributes['latitude'] = $location->lat;
+                $client->attributes['longitude'] = $location->lng;
+            }
             $client->attributes['start_validity'] = Carbon::now();
             $client->attributes['end_validity'] = Carbon::now()->addDays(15);
         });
